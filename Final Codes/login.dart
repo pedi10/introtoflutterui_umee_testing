@@ -1,225 +1,78 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+<div style="background-color: #215294; color: white; text-align: center; padding: 20px;">
+  <h1>Login Page Walkthrough</h1>
+</div>
 
-import 'package:flutter/material.dart';
-import 'dashboard.dart';
+---
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+## Table of Contents
+- [Essentials](#essentials)
+    - [Step 1: Setting Up the Initial Login Screen](#step-1-setting-up-the-initial-login-screen)
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
+---
 
-class _LoginPageState extends State<LoginPage> {
-  // Conterollers
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+# Essentials
 
-  // Remember Me Boolean
-  bool isRememberMe = false;
+## Step 1: Setting Up the Initial Login Screen
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        // Screen size width & height
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          // background of Container
-          image: DecorationImage(
-            image: AssetImage('/login_bg.png'),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Logo
-            logoImage(),
-            // Space
-            const SizedBox(height: 20),
-            // Login form Card
-            loginCard(),
-          ],
-        ),
-      ),
-    );
-  }
+### Concept in Flutter:
+Every Flutter app begins with the `main.dart` file, which acts as the entry point. The Flutter app hierarchy revolves around widgets—everything in Flutter is a widget. To structure your app, you use a `MaterialApp` widget, which provides access to material design elements like themes and navigation. To make the app functional, we define the `home` property of `MaterialApp` and point it to our initial screen. In this case, it’s a `LoginPage` widget, implemented as a `StatefulWidget` because its content (e.g., form inputs) will change dynamically.
 
-  /// --- MAIN WIDGETS --- ///
+### Tasks:
+1. Create a new file called `login.dart` in your `lib` folder.
+   
+    | ![step1-1](../assets/tutorial_login/step1-1.png) | ➡️ | ![step1-2](../assets/tutorial_login/step1-2.png) |
+    |--------------------------------|---|--------------------------------|
 
-  // Logo Image
-  Widget logoImage() {
-    return Image.asset('/logo.png', height: 50);
-  }
+2. In the `login.dart` import the Material package.
+    ```dart
+    import 'package:flutter/material.dart';
+    ```
+3. Create the `LoginPage` widget as a `StatefulWidget`. Since our login page will have dynamic content like text input fields and button clicks that can change over time, we need to use `StatefulWidget`. This allows us to keep track of changes in the page's state (like what the user types).
+    - Pro tip: Type `stf` in VS Code or Project IDX and press enter to quickly create a `StatefulWidget` template.
+    - Just rename the widget to `LoginPage` and you're good to go!
+    
+    Your `LoginPage` should look like this now:
 
-  // Login Card
-  Widget loginCard() {
-    return Card(
-      color: Colors.white,
-      elevation: 3,
-      child: Container(
-        //width: 400,
-        // Condition based container width based on the width of screen
-        width: (MediaQuery.of(context).size.width < 800)
-            ? MediaQuery.of(context).size.width * 0.8
-            : MediaQuery.of(context).size.width * 0.4,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            welcomeTexts(),
-            const SizedBox(height: 40),
-            textFields(),
-            const SizedBox(height: 10),
-            rememberMeRow(),
-            const SizedBox(height: 30),
-            loginButton(),
-            const SizedBox(height: 10),
-            newAccButton(),
-          ],
-        ),
-      ),
-    );
-  }
+    ```dart
+     // login.dart
+     import 'package:flutter/material.dart';
 
-  /// --- LOGIN CARD WIDGETS --- ///
+     class LoginPage extends StatefulWidget {
+          const LoginPage({super.key});
 
-  // Welcome Texts
-  Widget welcomeTexts() {
-    return Column(
-      children: [
-        Text(
-          'Welcome Back',
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          'Sign in to access to your account',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-        ),
-      ],
-    );
-  }
+          @override
+          State<LoginPage> createState() => _LoginPageState();
+     }
 
-  // Text Fields
-  Widget textFields() {
-    return Column(
-      children: [
-        TextField(
-          controller: emailController,
-          decoration: InputDecoration(
-            labelText: "Email",
-            filled: true,
-            fillColor: Colors.grey[200],
-          ),
-        ),
-        const SizedBox(height: 15),
-        TextField(
-          controller: passwordController,
-          decoration: InputDecoration(
-            labelText: "Password",
-            filled: true,
-            fillColor: Colors.grey[200],
-          ),
-          obscureText: true,
-        ),
-      ],
-    );
-  }
+     class _LoginPageState extends State<LoginPage> {
+          @override
+          Widget build(BuildContext context) {
+                return const Placeholder();
+          }
+     }
+    ```
 
-  // Remember Me and Forgot Password
-  Widget rememberMeRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Checkbox(
-                value: isRememberMe,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isRememberMe = value!;
-                  });
-                }),
-            Text('Remember Me'),
-          ],
-        ),
-        TextButton(
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Forgot Password Button Pressed!'),
-                backgroundColor: Colors.blue,
-              ),
-            );
-          },
-          child: Text('Forgot Password?'),
-        ),
-      ],
-    );
-  }
+4. In order to inform our app that `LoginPage` is our first page to be shown, we need to update `main.dart`, which is the entry point of every Flutter application (like `main()` in other programming languages). We'll use `MaterialApp`, which is a crucial Flutter widget that sets up the basic structure for a Material Design app - it provides common functionality like navigation, theming, and localization. By setting its `home` property to `LoginPage`, we're telling Flutter which screen to show first when the app launches. Think of `home` as the "default page" or "landing page" of your app.
 
-  // Login Button
-  Widget loginButton() {
-    return Container(
-      height: 40,
-      width: double.infinity,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xff0553B1),
-        ),
-        onPressed: () {
-          loginLogic();
-        },
-        child: Text('Login', style: TextStyle(color: Colors.white)),
-      ),
-    );
-  }
+   Here's what we'll change in `main.dart`:
 
-  // New Account Button
-  Widget newAccButton() {
-    return TextButton(
-      onPressed: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('New Account Button Pressed!'),
-            backgroundColor: Colors.blue,
-          ),
-        );
-      },
-      child: Text('Create New Account'),
-    );
-  }
+    ```dart
+    import 'package:flutter/material.dart';
+    import 'package:flutter_workshop/login.dart';
 
-  /// --- LOGICS --- ///
-
-  // Login Logic
-  void loginLogic() {
-    if (emailController.text == 'admin' && passwordController.text == 'root') {
-      // Succesfful Feedback
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login Successful!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      // Navigate to the Dashboard Page
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const DashboardPage()),
-      );
-    } else {
-      // Failed Feedback
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Login Failed!'),
-          backgroundColor: Colors.red,
-        ),
-      );
+    void main() {
+        runApp(const MyApp());
     }
-  }
-}
+
+    class MyApp extends StatelessWidget {
+        const MyApp({super.key});
+
+        @override
+        Widget build(BuildContext context) {
+            return MaterialApp(
+                debugShowCheckedModeBanner: false, // remove the debug banner
+                home: LoginPage(),
+            );
+        }
+    }
+    ```
